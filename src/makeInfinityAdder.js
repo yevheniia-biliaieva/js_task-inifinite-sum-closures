@@ -4,25 +4,39 @@
  * @return {function}
  */
 function makeInfinityAdder() {
+  let total = 0;
+
   const adder = (a) => {
     if (a === undefined) {
-      return 0;
+      return finish();
     }
 
-    return (b) => {
-      let result = a;
+    add(a);
 
+    return (b) => {
       if (b === undefined) {
-        return result;
+        return finish();
       }
 
-      result += b;
+      add(b);
 
-      return adder(result);
+      return adder;
     };
   };
 
   return adder;
+
+  function add(num) {
+    return (total += num);
+  }
+
+  function finish() {
+    const result = total;
+
+    total = 0;
+
+    return result;
+  }
 }
 
 module.exports = makeInfinityAdder;
